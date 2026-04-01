@@ -1,11 +1,31 @@
 """FastAPI application."""
 
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+import structlog
 from fastapi import FastAPI
+
+from simpli_template import __version__
+from simpli_template.logging import setup_logging
+from simpli_template.settings import settings
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    """Application startup and shutdown."""
+    setup_logging(json_logs=settings.app_env != "development")
+    log = structlog.get_logger()
+    log.info("starting", version=__version__, env=settings.app_env)
+    yield
+    log.info("shutting_down")
+
 
 app = FastAPI(
     title="Simpli Template",
-    version="0.1.0",
+    version=__version__,
     description="Simpli Support template project",
+    lifespan=lifespan,
 )
 
 
