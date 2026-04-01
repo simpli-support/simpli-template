@@ -5,7 +5,11 @@ WORKDIR /app
 COPY pyproject.toml .
 COPY src/ src/
 
-RUN pip install --no-cache-dir .
+RUN pip install --no-cache-dir . \
+    && addgroup --system appgroup \
+    && adduser --system --ingroup appgroup appuser
+
+USER appuser
 
 EXPOSE 8000
 
