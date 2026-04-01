@@ -7,9 +7,10 @@ class Settings(BaseSettings):
     """Application settings with defaults matching .env.example."""
 
     app_env: str = "development"
-    app_host: str = "0.0.0.0"
+    app_host: str = "0.0.0.0"  # noqa: S104
     app_port: int = 8000
     app_debug: bool = False
+    app_log_level: str = "info"
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

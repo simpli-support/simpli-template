@@ -15,7 +15,13 @@ def serve(
     reload: bool = typer.Option(settings.app_debug, help="Enable auto-reload"),
 ) -> None:
     """Start the API server."""
-    uvicorn.run("simpli_template.app:app", host=host, port=port, reload=reload)
+    uvicorn.run(
+        "simpli_template.app:app",
+        host=host,
+        port=port,
+        reload=reload,
+        log_level=settings.app_log_level,
+    )
 
 
 @app.command()

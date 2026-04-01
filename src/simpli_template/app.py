@@ -12,7 +12,7 @@ from simpli_template.settings import settings
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     """Application startup and shutdown."""
     setup_logging(json_logs=settings.app_env != "development")
     log = structlog.get_logger()

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "simpli-template"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Simpli Support template project"
 requires-python = ">=3.11"
 dependencies = [
@@ -21,6 +21,7 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",
+    "pytest-cov>=6.0",
     "ruff>=0.8",
     "mypy>=1.13",
 ]
@@ -28,12 +29,18 @@ dev = [
 [project.scripts]
 simpli-template = "simpli_template.cli:app"
 
+[tool.hatch.version]
+path = "src/simpli_template/__init__.py"
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP", "B", "SIM"]
+select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "RUF", "S", "PT", "RET", "ARG"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
 
 [tool.mypy]
 strict = true
@@ -52,3 +59,10 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+
+[tool.coverage.run]
+source = ["simpli_template"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
