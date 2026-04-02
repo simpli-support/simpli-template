@@ -1,18 +1,10 @@
 """Application settings loaded from environment variables."""
 
-from pydantic_settings import BaseSettings
+from simpli_core.settings import SimpliSettings
 
 
-class Settings(BaseSettings):
+class Settings(SimpliSettings):
     """Application settings with defaults matching .env.example."""
-
-    app_env: str = "development"
-    app_host: str = "0.0.0.0"  # noqa: S104
-    app_port: int = 8000
-    app_debug: bool = False
-    app_log_level: str = "info"
-
-    model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
 
 settings = Settings()
