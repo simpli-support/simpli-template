@@ -29,6 +29,9 @@ simpli-template = "simpli_template.cli:app"
 [tool.hatch.version]
 path = "src/simpli_template/__init__.py"
 
+[tool.hatch.metadata]
+allow-direct-references = true
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
