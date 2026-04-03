@@ -7,7 +7,6 @@ import structlog
 from fastapi import File, Form, UploadFile
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-
 from simpli_core import create_app
 from simpli_core.connectors import (
     FieldMapping,
@@ -16,6 +15,7 @@ from simpli_core.connectors import (
     apply_mappings,
 )
 from simpli_core.connectors.mapping import CASE_TO_TICKET
+
 from simpli_template import __version__
 from simpli_template.settings import settings
 
@@ -65,7 +65,7 @@ def _detect_format(filename: str | None) -> str:
 
 @app.post("/api/v1/ingest", response_model=IngestResult, tags=["ingest"])
 async def ingest_file(
-    file: UploadFile = File(...),
+    file: UploadFile = File(...),  # noqa: B008
     mappings: str | None = Form(default=None),
 ) -> IngestResult:
     """Ingest data from a file upload."""
@@ -80,9 +80,7 @@ async def ingest_file(
     return await _process_ingest(records, field_mappings, apply_defaults=False)
 
 
-@app.post(
-    "/api/v1/ingest/salesforce", response_model=IngestResult, tags=["ingest"]
-)
+@app.post("/api/v1/ingest/salesforce", response_model=IngestResult, tags=["ingest"])
 async def ingest_salesforce(request: SalesforceIngestRequest) -> IngestResult:
     """Pull cases from Salesforce."""
     instance_url = request.instance_url or settings.salesforce_instance_url
@@ -93,7 +91,8 @@ async def ingest_salesforce(request: SalesforceIngestRequest) -> IngestResult:
         return JSONResponse(  # type: ignore[return-value]
             status_code=400,
             content={
-                "detail": "Salesforce credentials required (instance_url, client_id, client_secret)"
+                "detail": "Salesforce credentials required"
+                " (instance_url, client_id, client_secret)"
             },
         )
 

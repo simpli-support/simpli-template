@@ -3,12 +3,15 @@
 import io
 import json
 
-import pytest
 from fastapi.testclient import TestClient
 
 
 def test_ingest_csv(client: TestClient) -> None:
-    csv_content = "subject,description\nPassword reset,I need help resetting\nBilling issue,Charge dispute\n"
+    csv_content = (
+        "subject,description\n"
+        "Password reset,I need help resetting\n"
+        "Billing issue,Charge dispute\n"
+    )
     file = io.BytesIO(csv_content.encode())
     response = client.post(
         "/api/v1/ingest",
