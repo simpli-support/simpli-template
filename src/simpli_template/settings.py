@@ -7,5 +7,7 @@ from simpli_core.settings import SimpliSettings
 class Settings(SimpliSettings, SalesforceSettings):
     """Application settings with defaults matching .env.example."""
 
+    app_port: int = 8019
+
 
 settings = Settings()

@@ -1,15 +1,14 @@
 """FastAPI application."""
 
 import json as json_module
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
 from typing import Any
 
 import structlog
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import File, Form, UploadFile
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from simpli_core import create_app
 from simpli_core.connectors import (
     FieldMapping,
     FileConnector,
@@ -17,35 +16,18 @@ from simpli_core.connectors import (
     apply_mappings,
 )
 from simpli_core.connectors.mapping import CASE_TO_TICKET
-from simpli_core.logging import setup_logging
 from simpli_template import __version__
 from simpli_template.settings import settings
 
-
-@asynccontextmanager
-async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
-    """Application startup and shutdown."""
-    setup_logging(json_output=settings.app_env != "development")
-    log = structlog.get_logger()
-    log.info("starting", version=__version__, env=settings.app_env)
-    yield
-    log.info("shutting_down")
-
-
 logger = structlog.get_logger()
 
-app = FastAPI(
+app = create_app(
     title="Simpli Template",
     version=__version__,
     description="Simpli Support template project",
-    lifespan=lifespan,
+    settings=settings,
+    cors_origins="*",
 )
-
-
-@app.get("/health")
-async def health() -> dict[str, str]:
-    """Health check endpoint."""
-    return {"status": "ok"}
 
 
 # ---------------------------------------------------------------------------
