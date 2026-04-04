@@ -115,10 +115,11 @@ async def _process_ingest(
     apply_defaults: bool = True,
 ) -> IngestResult:
     """Apply mappings and store records."""
+    keep = settings.preserve_unmapped_fields
     if custom_mappings:
-        mapped = apply_mappings(records, custom_mappings, preserve_unmapped=settings.preserve_unmapped_fields)
+        mapped = apply_mappings(records, custom_mappings, preserve_unmapped=keep)
     elif apply_defaults:
-        mapped = apply_mappings(records, CASE_TO_TICKET, preserve_unmapped=settings.preserve_unmapped_fields)
+        mapped = apply_mappings(records, CASE_TO_TICKET, preserve_unmapped=keep)
     else:
         mapped = records
 
