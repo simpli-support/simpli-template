@@ -71,7 +71,7 @@ async def ingest_file(
     """Ingest data from a file upload."""
     logger.info("ingest_file", filename=file.filename)
 
-    records = FileConnector.parse(file.file, format=_detect_format(file.filename))
+    records = FileConnector.parse(file.file, fmt=_detect_format(file.filename))
 
     field_mappings: list[FieldMapping] | None = None
     if mappings:
